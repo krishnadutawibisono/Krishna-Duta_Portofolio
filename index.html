@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krishna Duta Wibisono — Portofolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F1B2A;
+    --paper:#F5F2EA;
+    --blue-mid:#3D5A73;
+    --terracotta:#C4623A;
+    --grey:#8A9199;
+    --line:rgba(15,27,42,0.14);
+    --serif:'Fraunces', serif;
+    --sans:'Inter', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--navy);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  section{padding:96px 8vw;}
+  @media (max-width:720px){ section{padding:64px 6vw;} }
+
+  .eyebrow-coord{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--blue-mid);
+    letter-spacing:0.02em;
+    margin-bottom:10px;
+  }
+  h1,h2,h3{font-family:var(--serif); font-weight:600; line-height:1.1;}
+  h2{font-size:clamp(1.8rem,3.2vw,2.6rem); margin-bottom:8px;}
+  .section-intro{max-width:60ch; color:var(--blue-mid); font-size:1.02rem; margin-bottom:48px;}
+
+  /* NAV */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 8vw;
+    background:rgba(245,242,234,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-name{font-family:var(--serif); font-weight:600; font-size:1.05rem;}
+  .nav-links{display:flex; gap:28px; list-style:none; font-size:0.92rem;}
+  .nav-links a{text-decoration:none; position:relative; padding-bottom:2px;}
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px;
+    background:var(--terracotta); transition:width 0.25s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-toggle{display:none; font-family:var(--mono); background:none; border:1px solid var(--navy); padding:6px 10px; font-size:0.85rem;}
+  @media (max-width:800px){
+    .nav-links{display:none;}
+    .nav-toggle{display:block;}
+  }
+
+  /* HERO / COVER */
+  .cover{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:0 8vw;
+    position:relative;
+    overflow:hidden;
+    background-image: linear-gradient(rgba(245,242,234,0.88), rgba(245,242,234,0.94)), url('assets/cover-photo.jpg');
+    background-size: cover;
+    background-position: center 25%;
+  }
+  .cover-grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.5;
+    mask-image:linear-gradient(to bottom, black, transparent 80%);
+  }
+  .cover-content{position:relative; z-index:2; max-width:900px;}
+  .cover-coord{
+    font-family:var(--mono); font-size:0.85rem; color:var(--blue-mid);
+    margin-bottom:18px; opacity:0;
+    animation:fadeUp 0.7s ease forwards 0.1s;
+  }
+  .cover h1{
+    font-size:clamp(2.6rem,7vw,5.2rem);
+    opacity:0;
+    animation:fadeUp 0.8s ease forwards 0.25s;
+  }
+  .cover .role{
+    font-family:var(--mono); font-size:clamp(0.95rem,1.6vw,1.15rem);
+    color:var(--terracotta); margin-top:18px; letter-spacing:0.01em;
+    opacity:0;
+    animation:fadeUp 0.8s ease forwards 0.4s;
+  }
+  .cover p.desc{
+    margin-top:24px; max-width:56ch; font-size:1.08rem; color:#33465A;
+    opacity:0;
+    animation:fadeUp 0.8s ease forwards 0.55s;
+  }
+  .cover .cover-links{
+    margin-top:36px; display:flex; gap:20px; flex-wrap:wrap;
+    opacity:0;
+    animation:fadeUp 0.8s ease forwards 0.7s;
+  }
+  .cover .cover-links a{
+    font-family:var(--mono); font-size:0.85rem;
+    border-bottom:1px solid var(--navy); padding-bottom:3px; text-decoration:none;
+  }
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .scroll-cue{
+    position:absolute; bottom:40px; left:8vw; font-family:var(--mono);
+    font-size:0.75rem; color:var(--grey);
+  }
+
+  /* ABOUT */
+  .about-wrap{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start;}
+  @media (max-width:800px){ .about-wrap{grid-template-columns:1fr;} }
+  .about-text p{margin-bottom:16px; max-width:56ch; color:#2C3E50;}
+  .edu-block{border-top:1px solid var(--line); padding-top:18px; margin-top:28px;}
+  .edu-block .deg{font-family:var(--serif); font-size:1.15rem; margin-bottom:4px;}
+  .edu-block .meta{font-family:var(--mono); font-size:0.8rem; color:var(--blue-mid);}
+
+  .skills-title{font-family:var(--mono); font-size:0.8rem; color:var(--blue-mid); margin-bottom:16px;}
+  .skill-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr));
+    gap:14px;
+  }
+  .skill-item{
+    border:1px solid var(--line); background:#fff;
+    aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:8px; padding:10px; text-align:center;
+  }
+  .skill-item .logo-slot{
+    width:32px; height:32px; border:1px dashed var(--grey);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.6rem; color:var(--grey); font-family:var(--mono);
+  }
+  .skill-item span{font-size:0.7rem; color:var(--navy);}
+
+  /* THESIS / SKRIPSI blocks */
+  .research-block{
+    border:1px solid var(--line);
+    background:#fff;
+    padding:40px;
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:36px;
+  }
+  @media (max-width:720px){ .research-block{grid-template-columns:1fr; padding:26px;} }
+  .research-block + .research-block{margin-top:32px;}
+  .research-meta .label{font-family:var(--mono); font-size:0.72rem; color:var(--terracotta); margin-bottom:6px;}
+  .research-meta .value{font-size:0.9rem; margin-bottom:16px; color:var(--blue-mid);}
+  .research-body h3{font-size:1.35rem; margin-bottom:10px;}
+  .research-body p{color:#2C3E50; margin-bottom:14px; max-width:62ch;}
+  .research-body .status-tag{
+    display:inline-block; font-family:var(--mono); font-size:0.72rem;
+    border:1px solid var(--terracotta); color:var(--terracotta);
+    padding:4px 10px; margin-top:6px;
+  }
+
+  /* FIELDS OF EXPERTISE */
+  .field-group{
+    margin-bottom:56px;
+    padding:40px;
+    border:1px solid var(--line);
+    scroll-margin-top:90px;
+  }
+  .field-group:last-child{margin-bottom:0;}
+  @media (max-width:720px){ .field-group{padding:24px;} }
+
+  /* Muted, low-saturation tints per bidang — kept gentle on the eyes */
+  .field-group.tint-gnss{ background:#F1E9D8; border-color:#D8C6A0; }
+  .field-group.tint-hidrografi{ background:#E4EEF1; border-color:#B9D2DA; }
+  .field-group.tint-gis{ background:#E8EEE1; border-color:#C3D3B4; }
+  .field-group.tint-fotogrametri{ background:#F3E4DF; border-color:#E0B8AF; }
+
+  .field-group.tint-gnss .field-head{ border-bottom-color:#A9895640; }
+  .field-group.tint-hidrografi .field-head{ border-bottom-color:#4C778A40; }
+  .field-group.tint-gis .field-head{ border-bottom-color:#5C7A4340; }
+  .field-group.tint-fotogrametri .field-head{ border-bottom-color:#A34B3E40; }
+
+  .field-group.tint-gnss .project-card{ border-color:#D8C6A0; }
+  .field-group.tint-hidrografi .project-card{ border-color:#B9D2DA; }
+  .field-group.tint-gis .project-card{ border-color:#C3D3B4; }
+  .field-group.tint-fotogrametri .project-card{ border-color:#E0B8AF; }
+
+  .field-group.tint-gnss .project-card:hover{ border-color:#A98956; }
+  .field-group.tint-hidrografi .project-card:hover{ border-color:#4C778A; }
+  .field-group.tint-gis .project-card:hover{ border-color:#5C7A43; }
+  .field-group.tint-fotogrametri .project-card:hover{ border-color:#A34B3E; }
+
+  .field-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-bottom:1px solid var(--navy); padding-bottom:12px; margin-bottom:24px;
+  }
+  .field-head h3{font-size:1.5rem;}
+  .field-count{font-family:var(--mono); font-size:0.8rem; color:var(--blue-mid);}
+  .project-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:20px;
+  }
+  .project-card{
+    border:1px solid var(--line); background:#fff;
+    cursor:pointer;
+    transition:border-color 0.2s ease;
+    display:flex; flex-direction:column;
+  }
+  .project-card:hover{border-color:var(--terracotta);}
+  .project-thumb{
+    aspect-ratio:4/3; background:rgba(255,255,255,0.55);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:0.72rem; color:var(--grey);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+}
+  .project-card{ background:rgba(255,255,255,0.55); }
+  .project-info{ background:rgba(255,255,255,0.35); }
+  .project-info{padding:16px;}
+  .project-info .loc{font-family:var(--mono); font-size:0.7rem; color:var(--blue-mid); margin-bottom:6px;}
+  .project-info .title{font-family:var(--serif); font-size:1rem; font-weight:600;}
+
+  /* MODAL */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(15,27,42,0.72);
+    display:none; align-items:center; justify-content:center;
+    z-index:200; padding:5vw;
+  }
+  .modal-backdrop.open{display:flex;}
+  .modal{
+    background:var(--paper); max-width:820px; width:100%; max-height:86vh;
+    overflow-y:auto; position:relative;
+    border:1px solid var(--navy);
+    animation:modalIn 0.25s ease;
+  }
+  @keyframes modalIn{ from{opacity:0; transform:scale(0.97);} to{opacity:1; transform:scale(1);} }
+  .modal-close{
+    position:sticky; top:0; float:right; margin:14px;
+    background:var(--paper); border:1px solid var(--navy);
+    width:32px; height:32px; font-family:var(--mono); cursor:pointer;
+  }
+  .modal-imgs{
+    display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line);
+  }
+  @media (max-width:600px){ .modal-imgs{grid-template-columns:1fr;} }
+  .modal-imgs .ph{
+    aspect-ratio:4/3; background:#E7E2D6; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:0.72rem; color:var(--grey);
+  }
+  .modal-body{padding:32px 36px 40px;}
+  .modal-body .loc{font-family:var(--mono); font-size:0.75rem; color:var(--blue-mid); margin-bottom:8px;}
+  .modal-body h3{font-size:1.5rem; margin-bottom:14px;}
+  .modal-body p{color:#2C3E50; margin-bottom:12px;}
+  .modal-body .tools{font-family:var(--mono); font-size:0.78rem; color:var(--terracotta); margin-top:12px;}
+
+  /* FOOTER / CONTACT */
+  footer{
+    background:var(--navy); color:var(--paper);
+    padding:72px 8vw 40px;
+  }
+  footer h2{color:var(--paper);}
+  footer .section-intro{color:#AEBCCB;}
+  .contact-links{display:flex; gap:32px; flex-wrap:wrap; margin-top:24px;}
+  .contact-links a{
+    font-family:var(--mono); font-size:0.9rem; text-decoration:none;
+    border-bottom:1px solid rgba(245,242,234,0.4); padding-bottom:3px;
+  }
+  .footer-bottom{
+    margin-top:64px; padding-top:24px; border-top:1px solid rgba(245,242,234,0.15);
+    font-family:var(--mono); font-size:0.72rem; color:#7C8CA0;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  @media print{
+    nav{position:static; backdrop-filter:none; background:none; border:none; page-break-after:avoid;}
+    .cover{min-height:auto; page-break-after:always;}
+    .cover-grid{display:none;}
+    section{padding:32px 24px; page-break-inside:avoid;}
+    .field-group{page-break-inside:avoid; break-inside:avoid; margin-bottom:24px;}
+    .project-card{page-break-inside:avoid; break-inside:avoid;}
+    .modal-backdrop{display:none !important;}
+    .scroll-cue{display:none;}
+    .cover .desc, .cover h1, .cover .role, .cover-coord, .cover-links{animation:none; opacity:1;}
+    footer{background:var(--paper); color:var(--navy); page-break-before:always;}
+    footer h2{color:var(--navy);}
+    footer .section-intro{color:var(--blue-mid);}
+    .contact-links a{color:var(--navy); border-bottom-color:var(--navy);}
+    a[href]::after{content:none !important;}
+    body{background:#fff;}
+
+    .project-card::after{
+      content: attr(data-desc) "  •  Tools: " attr(data-tools);
+      display:block;
+      padding:0 16px 16px;
+      margin-top:-4px;
+      font-family:var(--sans);
+      font-size:0.78rem;
+      line-height:1.5;
+      color:#2C3E50;
+    }
+    .research-block, .field-group, .project-card{ box-shadow:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-name">Krishna Duta Wibisono</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skripsi">Final Project</a></li>
+    <li><a href="#tesis">Thesis</a></li>
+    <li><a href="#bidang">Project</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ============ COVER ============ -->
+<section class="cover" id="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-content">
+    <div class="cover-coord">7.7956° S, 110.3695° E — Yogyakarta, Indonesia</div>
+    <h1>Krishna Duta<br>Wibisono</h1>
+    <div class="role">Geodetic &amp; Geomatics Engineer</div>
+    <p class="desc">
+      A fresh master and bachelor graduate in Geodetic Engineering with a strong passion for GIS, surveying and mapping, Global
+      Navigation Satellite Systems, photogrammetry, and remote sensing. Experienced in participating in various surveying and
+      mapping projects. Highly motivated to develop new skills and adaptable in collaborative work. Dedicated to continuous selfimprovement.
+      
+    </p>
+    <div class="cover-links">
+      <a href="mailto:krishnadutawibisono@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/krishnadutawibisono/" target="_blank">LinkedIn</a>
+      <a href="#bidang">Portfolio Project</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT / AKADEMIK ============ -->
+<section id="about">
+  <div class="eyebrow-coord">01 — Academic Background</div>
+  <h2>Academic background</h2>
+  <p class="section-intro">
+    My academic path has centered on GNSS coordinate processing and geospatial analysis, from comparing PPP and network-based solutions across the Kendeng Fault to building out GIS-based spatial analysis, hydrography, and photogrammetry work. I'm drawn to the point where precise positioning meets applied geospatial problems, and I like working across the full range of tools rather than narrowing in on just one.
+  </p>
+
+  <div class="about-wrap">
+    <div class="about-text">
+      <div class="edu-block">
+        <div class="deg">Master of Geomatics Engineering</div>
+        <div class="meta">Universitas Gadjah Mada — Aug 2024 – Jul 2026 — IPK 3.85/4.00</div>
+        <p style="margin-top:10px;">Tesis: Analysis of GNSS Coordinate Solutions using Precise Point Positioning and Network-based Processing Methods.</p>
+      </div>
+      <div class="edu-block">
+        <div class="deg">Bachelor of Geodetic Engineering</div>
+        <div class="meta">Universitas Gadjah Mada — Aug 2021 – Jul 2025 — IPK 3.58/4.00</div>
+        <p style="margin-top:10px;">Final Project: Vertical Deformation Analysis of The Northern Coastal of Central Java using GNSS CORS And InSAR Data.</p>
+      </div>
+    </div>
+
+    <div class="skills-section">
+      <div class="skills-title">SOFTWARE &amp; TOOLS</div>
+      <div class="skill-grid">
+        <div class="skill-item"><img src="assets/logos/qgis.png" alt="QGIS" style="width:32px;height:32px;object-fit:contain;"><span>QGIS</span></div>
+        <div class="skill-item"><img src="assets/logos/arcgispro.jpg" alt="ArcGIS Pro" style="width:32px;height:32px;object-fit:contain;"><span>ArcGIS Pro</span></div>
+        <div class="skill-item"><img src="assets/logos/gamit-globk.svg" alt="GAMIT/GLOBK" style="width:32px;height:32px;object-fit:contain;"><span>GAMIT/GLOBK</span></div>
+        <div class="skill-item"><img src="assets/logos/pridepppar.png" alt="PRIDE PPP-AR" style="width:32px;height:32px;object-fit:contain;"><span>PRIDE PPP-AR</span></div>
+        <div class="skill-item"><img src="assets/logos/tbc.jfif" alt="Trimble Business Center" style="width:32px;height:32px;object-fit:contain;"><span>Trimble Business Center</span></div>
+        <div class="skill-item"><img src="assets/logos/globalmapper.png" alt="Global Mapper" style="width:32px;height:32px;object-fit:contain;"><span>Global Mapper</span></div>
+        <div class="skill-item"><img src="assets/logos/envi.jfif" alt="ENVI" style="width:32px;height:32px;object-fit:contain;"><span>ENVI</span></div>
+        <div class="skill-item"><img src="assets/logos/autocad.png" alt="AutoCAD" style="width:32px;height:32px;object-fit:contain;"><span>AutoCAD</span></div>
+        <div class="skill-item"><img src="assets/logos/python.webp" alt="Python" style="width:32px;height:32px;object-fit:contain;"><span>Python</span></div>
+        <div class="skill-item"><img src="assets/logos/postgresql.svg" alt="PostgreSQL" style="width:32px;height:32px;object-fit:contain;"><span>PostgreSQL</span></div>
+        <div class="skill-item"><img src="assets/logos/mapbox.png" alt="Mapbox" style="width:32px;height:32px;object-fit:contain;"><span>Mapbox</span></div>
+        <div class="skill-item"><img src="assets/logos/sketchup.png" alt="SketchUp" style="width:32px;height:32px;object-fit:contain;"><span>SketchUp</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKRIPSI ============ -->
+<section id="skripsi">
+  <div class="eyebrow-coord">02 — Undergraduate Final Project</div>
+  <h2>Final Project</h2>
+  <div class="research-block">
+    <div class="research-meta">
+      <div class="label">LOCATION</div>
+      <div class="value">Northern Coastal of Central Java</div>
+      <div class="label">METHOD</div>
+      <div class="value">GNSS CORS &amp; InSAR</div>
+      <div class="label">YEAR</div>
+      <div class="value">2025</div>
+    </div>
+    <div class="research-body">
+      <h3>Vertical Deformation Analysis of The Northern Coastal of Central Java using GNSS CORS And InSAR Data</h3>
+      <p>Analyzed vertical deformation along the northern coast of Central Java using GNSS CORS and Sentinel-1 InSAR data from 2022–2024. Processed GNSS observations with GAMIT/GLOBK and performed InSAR time-series analysis using LiCSBAS. The study identified subsidence and uplift patterns and compared deformation trends between GNSS and InSAR, highlighting their complementary capabilities for monitoring coastal deformation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESIS ============ -->
+<section id="tesis">
+  <div class="eyebrow-coord">03 — Tesis</div>
+  <h2>Tesis</h2>
+  <div class="research-block">
+    <div class="research-meta">
+      <div class="label">LOKASI</div>
+      <div class="value">Sesar Kendeng, Jawa Timur</div>
+      <div class="label">METODE</div>
+      <div class="value">PRIDE PPP-AR &amp; GAMIT/GLOBK</div>
+      <div class="label">TAHUN</div>
+      <div class="value">2026</div>
+    </div>
+    <div class="research-body">
+      <h3>Analysis of GNSS Coordinate Solutions using Precise Point Positioning and Network-based Processing Methods</h3>
+      <p>Compared GNSS coordinate solutions from PRIDE PPP-AR and GAMIT/GLOBK using CORS and campaign observations from 2017–2022 around the Kendeng Fault. The study evaluated annual coordinate differences and their statistical significance, showing generally consistent results between the two processing methods.</p>
+      <span class="status-tag">The manuscript has submitted on Journal of Applied Geodesy</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 BIDANG KEAHLIAN ============ -->
+<section id="bidang">
+  <div class="eyebrow-coord">04 — Portofolio Project & Experience</div>
+  <h2>Project and Experience</h2>
+  <p class="section-intro">Click on any project to view field photos, processed maps, and method details.</p>
+
+<!-- SURVEI PEMETAAN & GNSS (6) -->
+<div class="field-group tint-gnss" id="gnss">
+  <div class="field-head">
+    <h3>Surveying &amp; GNSS</h3>
+    <span class="field-count">6 project</span>
+  </div>
+  <div class="project-grid" data-field="gnss">
+
+    <div class="project-card"
+      data-title="Field Camp"
+      data-loc="Kulon Progo - 2024"
+      data-desc="Conducted topographic field measurements as part of a collegiate field camp, covering control point establishment and terrain mapping."
+      data-tools="Total Station, Waterpass, GNSS, AutoCAD, GIS"
+      data-photo="assets/projects/gnss-1-foto.jpg"
+      data-map="assets//projects/petakk.png">
+      <div class="project-thumb"><img src="assets/projects/petakk.png" alt="Field Camp" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Kulon Progo - 2024</div>
+        <div class="title">Field Camp</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="3D Survey with SLAM for Research"
+      data-loc="Yogyakarta - 2024"
+      data-desc="Captured 3D point cloud data of an urban area using handheld SLAM scanning technology to support spatial research applications."
+      data-tools="SLAM Scanner, Point Cloud Processing Software"
+      data-photo="assets/projects/kegiatanpadanan1.jpeg"
+      data-map="assets/projects/kegiatanpadanan2.jpeg">
+      <div class="project-thumb"><img src="assets/projects/kegiatanpadanan3.jpeg" alt="3D Survey with SLAM for Research" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2024</div>
+        <div class="title">3D Survey with SLAM for Research</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="Opak Fault Survey"
+      data-loc="Yogyakarta - 2024"
+      data-desc="Conducted field surveys along the Opak Fault as part of the Opak Fault Survey research project initiated by the Department of Geodetic Engineering at UGM. Utilized GNSS-based measurement techniques to observe fault displacements and provide essential geospatial data to support disaster mitigation planning."
+      data-tools="GNSS, GNSS Static Survey"
+      data-photo="assets/projects/sertifopak.png"
+      data-map="assets/projects/kegiatanopak.png">
+      <div class="project-thumb"><img src="assets/projects/kegiatanopak.png" alt="Opak Fault Survey" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2024</div>
+        <div class="title">Opak Fault Survey</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="Mataram Fault Survey"
+      data-loc="Yogyakarta - 2025"
+      data-desc="Conducted field surveys along the Mataram Fault as part of the Mataram Fault Survey research project initiated by the Department of Geodetic Engineering at UGM. Utilized GNSS-based measurement techniques to observe fault displacements and provide essential geospatial data to support disaster mitigation planning."
+      data-tools="GNSS, GNSS Static Survey"
+      data-photo="assets/projects/sertifmataram.png"
+      data-map="assets/projects/kegiatanmataram.png">
+      <div class="project-thumb"><img src="assets/projects/kegiatanmataram.png" alt="Mataram Fault Survey" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2025</div>
+        <div class="title">Mataram Fault Survey</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="Engineer Intern @ BIG"
+      data-loc="Bogor - 2025"
+      data-desc="Processed GNSS CORS and GNSS Campaign data to determine velocities using software such as PRIDE PPP-AR, GAMIT/GLOBK, and Trimble Business Center. Conducted research using GNSS CORS and GNSS Campaign data with Trimble Business Center to determine the optimal observation time for deformation."
+      data-tools="PRIDE PPP-AR, GAMIT/GLOBK, Trimble Business Center"
+      data-photo="assets/projects/kegiatankp.png"
+      data-map="assets/projects/gnss-5-peta.jpg">
+      <div class="project-thumb"><img src="assets/projects/kegiatankp.png" alt="Engineer Intern @ BIG" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Bogor - 2025</div>
+        <div class="title">Engineer Intern @ BIG</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="GAMIT/GLOBK Trainer @ BIG"
+      data-loc="Yogyakarta - 2025"
+      data-desc="Prepared training materials and delivered hands-on sessions on GNSS coordinate processing using GAMIT/GLOBK for participants from a partner institution."
+      data-tools="GAMIT/GLOBK"
+      data-photo="assets/projects/kegiatantrainerbig.png"
+      data-map="assets/projects/sertiftrainerbig.png">
+      <div class="project-thumb"><img src="assets/projects/kegiatantrainerbig.png" alt="GAMIT/GLOBK Trainer @ BIG" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2025</div>
+        <div class="title">GAMIT/GLOBK Trainer @ BIG</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HIDROGRAFI (2) -->
+<div class="field-group tint-hidrografi" id="hidrografi">
+  <div class="field-head">
+    <h3>Hydrography</h3>
+    <span class="field-count">2 project</span>
+  </div>
+  <div class="project-grid" data-field="hidrografi">
+
+    <div class="project-card"
+      data-title="College - Project Bathymetric Surveying on Sermo"
+      data-loc="Kulon Progo - 2023"
+      data-desc="Conducted a bathymetric survey on Sermo Reservoir as part of a hydrography coursework, collecting depth soundings to characterize the reservoir floor."
+      data-tools="Multi-Beam Echosounder, Single-Beam Echosounder, GNSS, Drone"
+      data-photo="assets/projects/kegiatan1surhid1.jpeg"
+      data-map="assets/projects/kegiatan1surhid2.jpeg">
+      <div class="project-thumb"><img src="assets/projects/kegiatan1surhid2.jpeg" alt="College - Project Bathymetric Surveying on Sermo" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Kulon Progo - 2023</div>
+        <div class="title">College - Project Bathymetric Surveying on Sermo</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="College - Bathymetric Contour Mapping"
+      data-loc="Yogyakarta - 2024"
+      data-desc="Processed national bathymetric (BATNAS) and GEBCO data into a 1:100,000-scale depth contour map for the Pameungpeuk area, West Java, referenced to the WGS 1984 datum."
+      data-tools="QGIS, Global Mapper"
+      data-photo="assets/projects/kegiatan2surhid1.png"
+      data-map="assets/projects/kegiatan2surhid2.png">
+      <div class="project-thumb"><img src="assets/projects/kegiatan2surhid2.png" alt="College - Bathymetric Contour Mapping" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2024</div>
+        <div class="title">College Project - Bathymetric Contour Mapping</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- GIS DAN ANALISIS SPASIAL (6) -->
+<div class="field-group tint-gis" id="gis">
+  <div class="field-head">
+    <h3>GIS &amp; Analisis Spasial</h3>
+    <span class="field-count">6 project</span>
+  </div>
+  <div class="project-grid" data-field="gis">
+
+    <div class="project-card"
+      data-title="College Project - Spatial Analyst"
+      data-loc="Yogyakarta - 2023-2024"
+      data-desc="Performed spatial analysis coursework covering overlay analysis, buffering, and suitability modeling using GIS software."
+      data-tools="ArcGIS Pro, QGIS"
+      data-photo="assets/projects/spatialanalyst1.png"
+      data-map="assets/projects/spatialanalyst2.png">
+      <div class="project-thumb"><img src="assets/projects/spatialanalyst1.png" alt="College Project - Spatial Analyst" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2023-2024</div>
+        <div class="title">College Project - Spatial Analysis</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="College Project - Building WebGIS"
+      data-loc="Yogyakarta - 2023"
+      data-desc="Built a web-based GIS application to visualize and query spatial datasets through an interactive map interface. The results can be seen @ https://dionnwwedha.github.io/MiniProject_Prakt_SIGWEB_Kelompok5/"
+      data-tools="PostgreSQL, Mapbox, QGIS, Leaflet.js"
+      data-photo="assets/projects/webgis1.png"
+      data-map="assets/projects/webgis2.png">
+      <div class="project-thumb"><img src="assets/projects/webgis3.png" alt="College Project - Building WebGIS" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2023</div>
+        <div class="title">College Project - Building WebGIS</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="Capstone Design - Building QGIS Plugin"
+      data-loc="Yogyakarta - 2024"
+      data-desc="Developed a custom QGIS plugin as part of a capstone design project to automate a repetitive geospatial data-processing workflow."
+      data-tools="QGIS, Python"
+      data-photo="assets/projects/prgg1.png"
+      data-map="assets/projects/prgg2.png">
+      <div class="project-thumb"><img src="assets/projects/prgg3.png" alt="Capstone Design - Building QGIS Plugin" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2024</div>
+        <div class="title">Capstone Design - Building QGIS Plugin</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="GIS Trainer for BPN — ILASPP Program"
+      data-loc="Yogyakarta - 2025"
+      data-desc="Prepared materials and datasets for GIS training for BPN to support the ILASPP program. Assisted participants throughout the training sessions in both theoretical and practical activities using QGIS. Prepared and conducted pre-training and post-training evaluations for participants."
+      data-tools="QGIS"
+      data-photo="assets/projects/sertifkemenkeu2.png"
+      data-map="assets/projects/kegiatankemenkeu2.png">
+      <div class="project-thumb"><img src="assets/projects/kegiatankemenkeu2.png" alt="GIS Trainer for BPN - ILASPP Program" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2025</div>
+        <div class="title">GIS Trainer for BPN - ILASPP Program</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="GIS Trainer & Instructor for Ministry of Finance"
+      data-loc="Yogyakarta - 2026"
+      data-desc="Prepared materials and datasets for GIS training for the Ministry of Finance of the Republic of Indonesia. Delivered lectures and hands-on sessions on fundamental GIS concepts and applications using QGIS. Prepared and conducted pre-training and post-training evaluations for participants."
+      data-tools="QGIS"
+      data-photo="assets/projects/kegiatankemenkeu1.png"
+      data-map="assets/projects/sertifkemenkeu1.png">
+      <div class="project-thumb"><img src="assets/projects/kegiatankemenkeu1.png" alt="GIS Trainer & Instructor" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2026</div>
+        <div class="title">GIS Trainer & Instructor</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="GIS Engineer @ Geo AI Twinverse"
+      data-loc="Yogyakarta - 2026"
+      data-desc="Generated training datasets through on-screen digitization of aerial imagery for deep learning-based land cover classification and pepper detection in the PT Vale Indonesia Tbk area. Conducted post-processing and refinement of land cover classification outputs to improve classification accuracy and reliability."
+      data-tools="ArcGIS Pro, Python"
+      data-photo="assets/projects/geoait1.jpeg"
+      data-map="assets/projects/geoait2.jpeg">
+      <div class="project-thumb"><img src="assets/projects/geoait2.jpeg" alt="GIS Engineer @ Geo AI Twinverse" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2026</div>
+        <div class="title">GIS Engineer @ Geo AI Twinverse</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOTOGRAMETRI (4) -->
+<div class="field-group tint-fotogrametri" id="fotogrametri">
+  <div class="field-head">
+    <h3>Fotogrametri</h3>
+    <span class="field-count">4 project</span>
+  </div>
+  <div class="project-grid" data-field="fotogrametri">
+
+    <div class="project-card"
+      data-title="College Project - Oil Palm Detection with AI"
+      data-loc="Yogyakarta - 2023"
+      data-desc="Trained a deep learning model on aerial/satellite imagery to detect and classify oil palm trees for a remote sensing coursework project."
+      data-tools="Python, ENVI"
+      data-photo="assets/projects/detection1.png"
+      data-map="assets/projects/detection2.png">
+      <div class="project-thumb"><img src="assets/projects/detection1.png" alt="College Project - Oil Palm Detection with AI" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2023</div>
+        <div class="title">College Project - Oil Palm Detection with AI</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="College Project - 3D Point Cloud Registration"
+      data-loc="Yogyakarta - 2023"
+      data-desc="Registered multiple 3D point cloud scans into a unified coordinate reference frame using iterative closest point techniques."
+      data-tools="Point Cloud Processing Software"
+      data-photo="assets/projects/3dregist1.png"
+      data-map="assets/projects/3dregist2.png">
+      <div class="project-thumb"><img src="assets/projects/3dregist1.png" alt="College Project - 3D Point Cloud Registration" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2023</div>
+        <div class="title">College Project - 3D Point Cloud Registration</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="College Project - 3D Point Cloud Classification"
+      data-loc="Yogyakarta - 2024"
+      data-desc="Classified 3D point cloud data into distinct feature categories (ground, vegetation, structures) as part of a photogrammetry coursework project."
+      data-tools="Point Cloud Processing Software"
+      data-photo="assets/projects/3dclass1.png"
+      data-map="assets/projects/3dclass2.png">
+      <div class="project-thumb"><img src="assets/projects/3dclass1.png" alt="College Project - 3D Point Cloud Classification" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2024</div>
+        <div class="title">College Project - 3D Point Cloud Classification</div>
+      </div>
+    </div>
+
+    <div class="project-card"
+      data-title="College Project - LULC Classification with Remote Sensing"
+      data-loc="Yogyakarta - 2023"
+      data-desc="Performed land use / land cover classification from satellite imagery using supervised classification techniques."
+      data-tools="ENVI, ArcGIS Pro"
+      data-photo="assets/projects/lulc1.png"
+      data-map="assets/projects/lulc2.png">
+      <div class="project-thumb"><img src="assets/projects/lulc2.png" alt="College Project - LULC Classification with Remote Sensing" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="project-info">
+        <div class="loc">Yogyakarta - 2023</div>
+        <div class="title">College Project - LULC Classification with Remote Sensing</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ MODAL (shared) ============ -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-imgs">
+      <div class="ph" id="modalPhoto">foto lapangan</div>
+      <div class="ph" id="modalMap">peta hasil pengolahan</div>
+    </div>
+    <div class="modal-body">
+      <div class="loc" id="modalLoc"></div>
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+      <div class="tools" id="modalTools"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER / CONTACT ============ -->
+<footer id="contact">
+  <div class="eyebrow-coord" style="color:#7C8CA0;">05 — Contact</div>
+  <h2>Let's Connect!</h2>
+  <div class="contact-links">
+    <a href="mailto:krishnadutawibisono@gmail.com">krishnadutawibisono@gmail.com</a>
+    <a href="wa.me+6289538747644">WhatsApp</a>
+    <a href="https://www.linkedin.com/in/krishnadutawibisono/" target="_blank">LinkedIn</a>
+  </div>
+  <div class="footer-bottom">
+    <span>Krishna Duta Wibisono — Yogyakarta, Indonesia</span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+<script>
+  // Modal logic — pakai data-* attribute di tiap .project-card
+  const backdrop = document.getElementById('modalBackdrop');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalLoc = document.getElementById('modalLoc');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalTools = document.getElementById('modalTools');
+  const modalPhoto = document.getElementById('modalPhoto');
+  const modalMap = document.getElementById('modalMap');
+
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('click', () => {
+      modalTitle.textContent = card.dataset.title || '';
+      modalLoc.textContent = card.dataset.loc || '';
+      modalDesc.textContent = card.dataset.desc || '';
+      modalTools.textContent = card.dataset.tools ? 'Tools: ' + card.dataset.tools : '';
+
+      modalPhoto.innerHTML = card.dataset.photo
+        ? `<img src="${card.dataset.photo}" alt="foto lapangan" style="width:100%;height:100%;object-fit:cover;">`
+        : 'foto lapangan';
+
+      modalMap.innerHTML = card.dataset.map
+        ? `<img src="${card.dataset.map}" alt="peta hasil pengolahan" style="width:100%;height:100%;object-fit:cover;">`
+        : 'peta hasil pengolahan';
+
+      backdrop.classList.add('open');
+    });
+  });
+
+  document.getElementById('modalClose').addEventListener('click', () => backdrop.classList.remove('open'));
+  backdrop.addEventListener('click', (e) => { if(e.target === backdrop) backdrop.classList.remove('open'); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') backdrop.classList.remove('open'); });
+</script>
+
+</body>
+</html>
